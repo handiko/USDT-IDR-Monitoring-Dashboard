@@ -7,7 +7,7 @@ import time
 
 # --- 1. SETUP ---
 st.set_page_config(
-    page_title="Ajaib Ops: USDT/IDR Terminal",
+    page_title="Monitoring Dashboard: USDT/IDR Terminal",
     layout="wide",
     initial_sidebar_state="expanded"
 )
