@@ -34,6 +34,10 @@ The top row of the dashboard displays the **Pulse of the Market**:
 * **Best Bid/Ask:** The current highest buy and lowest sell prices available on the exchange.
 * **Spread (%):** A critical health metric. A widening spread indicates a volatile or illiquid market where trading becomes expensive.
 
+<p align="center">
+  <img src="pulse.png" alt="pulse" width="900"/>
+</p>
+
 ### Step 2: Running an Execution Simulation
 The **Execution Simulation** panel on the left allows you to act as an Ops Manager or Institutional Trader:
 1.  **Select Side:** Choose **Buy** or **Sell**.
@@ -41,14 +45,26 @@ The **Execution Simulation** panel on the left allows you to act as an Ops Manag
 3.  **Analyze Impact:** The dashboard instantly calculates the **Execution VWAP** and **Est. Slippage**. 
     * *Operational Tip:* If slippage exceeds 0.2%, an Ops Manager might choose to split the order into smaller "slices" or wait for a period of higher liquidity.
 
+<p align="center">
+  <img src="execute.png" alt="execute" width="500"/>
+</p>
+
 ### Step 3: Reading the Depth Chart
 The **Market Depth Chart** (Green and Red areas) visualizes the future of price movement:
 * **The Green Area (Bids):** Represents the "Floor." A steep green mountain indicates strong buy support; the price is unlikely to drop quickly.
 * **The Red Area (Asks):** Represents the "Ceiling." A tall red mountain indicates heavy selling pressure.
 * **The Mid-Point:** The narrow gap between these areas is where the spread exists.
 
+<p align="center">
+  <img src="depth.png" alt="depth" width="900"/>
+</p>
+
 ### Step 4: Tracking Trends
 The **Price History** and **Spread History** charts help identify correlation. For example, if the spread widens during a price drop, it indicates that liquidity is being pulled from the book, signaling a "Flash Crash" risk.
+
+<p align="center">
+  <img src="price.png" alt="price" width="900"/>
+</p>
 
 ---
 
