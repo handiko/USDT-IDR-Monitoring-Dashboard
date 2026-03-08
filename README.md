@@ -1,5 +1,7 @@
 # 📘 USDT-IDR Market Monitor: A Demo
 
+![](./screen.png)
+
 ## 1. Context & Business Case
 ### Background: The Liquidity Challenge
 In the Indonesian crypto ecosystem, the **USDT/IDR** pair serves as the foundational gateway for digital asset trading. For a Business Operations team, the "ticker price" is often a surface-level metric. The real operational challenge lies in **Liquidity Depth**. 
