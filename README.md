@@ -1,88 +1,75 @@
-# Monitoring Dashboard: USDT/IDR Terminal — Technical Deep Dive
+# 📘 USDT-IDR Market Monitor: A Demo
 
-A high-fidelity monitoring terminal for the **USDT/IDR** pair, built for liquidity analysis and execution simulation across Indonesian exchanges. This project focuses on minimizing latency and maximizing the visibility of order book depth through a "Terminal-as-a-Service" UI.
+## 1. Context & Business Case
+### Background: The Liquidity Challenge
+In the Indonesian crypto ecosystem, the **USDT/IDR** pair serves as the foundational gateway for digital asset trading. For a Business Operations team, the "ticker price" is often a surface-level metric. The real operational challenge lies in **Liquidity Depth**. 
 
-![](./screen.png)
+When a market is "thin" (low density of orders in the book), even a moderate trade can cause the price to move unfavorably. This phenomenon, known as **Slippage**, directly increases the cost of doing business and negatively impacts user experience.
 
----
-
-## Architectural Overview
-
-The application follows a **Reactive Polling Architecture**. Unlike traditional Streamlit apps that rerun the entire script on every interaction, this terminal utilizes **Streamlit Fragments** to isolate the data-heavy monitoring loop from the static UI components.
-
-### 1. The Data Engine (`ccxt` Integration)
-The core of the system leverages the **CCXT (CryptoCurrency eXchange Trading Library)** to interface with Indodax and Tokocrypto.
-* **Rate Limiting**: `enableRateLimit: True` is enforced to prevent IP bans during the 1-second polling cycles.
-* **Data Aggregation**: The `fetch_data()` function concurrently pulls the L2 Order Book (top 50 levels) and 1-minute OHLCV (Open, High, Low, Close, Volume) data from Indodax.
-* **Cross-Exchange Comparison**: A secondary engine fetches the last traded price from Tokocrypto to calculate real-time arbitrage spreads.
-
-### 2. Real-Time State Management
-Streamlit’s `session_state` is utilized to provide a persistent "memory" for transient data:
-* **`spread_history`**: An in-memory buffer that stores a rolling window of the last 120 data points of the bid/ask spread percentage.
-* **Buffer Pruning**: To prevent memory leaks, the system automatically pops the oldest record once the 120-item limit is reached, ensuring the "Spread History" chart remains performant over long sessions.
+### Case Study: The "Invisible" Cost of Execution
+Imagine a scenario where a Business Operations Associate must execute a **100,000,000 IDR** sell order to rebalance company liquidity:
+* **The Ticker Price:** 16,971 IDR.
+* **The Problem:** There isn't enough immediate demand at 16,971 to fill the entire 100M IDR order.
+* **The Reality:** To complete the sale, the order "walks" down the order book, filling at progressively lower prices.
+* **The Goal:** This dashboard was built to predict this exact cost *before* the trade is executed, allowing for smarter, data-driven execution strategies.
 
 ---
 
-## Inner Working Mechanisms
-
-### Liquidity Walking (The Impact Calculator)
-The `simulate_impact` function is a custom-built engine that mimics how a **Market Order** would behave in a live environment. Instead of just looking at the "Best Ask," it "walks" the order book to find the true execution price:
-
-1.  **Level Iteration**: It iterates through the `asks` (for Buys) or `bids` (for Sells).
-2.  **Cumulative Fill**: For each level, it calculates the available liquidity ($Price \times Quantity$).
-3.  **Partial Fills**: If the trade amount is larger than a single level, it consumes that level and moves to the next, tracking the `worst_px` encountered.
-4.  **Slippage Calculation**: It computes the **Volume Weighted Average Price (VWAP)** and compares it to the **Best Bid/Ask** to determine the percentage of slippage.
-
-### Fragmented Rendering
-To achieve the "Live" feel, the `dashboard_body()` is wrapped in the `@st.fragment(run_every=1.0)` decorator. 
-* **Logic**: This tells Streamlit to only rerun the code inside this function every 1 second.
-* **Benefit**: The sidebar inputs and the custom CSS header remain static. This significantly reduces computational overhead and prevents the "flicker" associated with full-page refreshes.
-
-### UI & UX Engineering
-The interface is transformed via **Global CSS Injection** to mimic a professional financial terminal (e.g., Bloomberg or Refinitiv):
-* **Typography**: Uses `JetBrains Mono` for a "code-centric" data feel and `Syne` for high-impact headers.
-* **Color Theory**: Adheres to a strict dark-mode palette:
-    * **Background**: `#080d14` (Deep Navy)
-    * **Success/Bids**: `#22c55e` (Emerald)
-    * **Danger/Asks**: `#f87171` (Coral Red)
-* **Animations**: Includes a CSS-based pulse animation on the "Live" status dot to indicate active data streaming.
+## 2. What This Project Accomplishes
+This dashboard is a high-frequency monitoring tool that transforms raw exchange data into three actionable operational insights:
+1.  **Slippage Prediction:** Calculates the Volume Weighted Average Price (VWAP) for any specific trade size in real-time.
+2.  **Liquidity Visualization:** Provides a cumulative view of "Market Walls" to identify where buyers and sellers are concentrated.
+3.  **Spread Health:** Monitors the gap between Bid and Ask to identify periods of market stress or inefficiency.
 
 ---
 
-## Data Visualization Logic
+## 3. Instruction Manual: How to Use the Dashboard
 
-| Component | Logic Applied | Visualization Tool |
-| :--- | :--- | :--- |
-| **Price Trend** | Candlestick representation of 1m OHLCV data with custom fill colors. | Plotly (Candlestick) |
-| **Market Depth** | Cumulative sum of Bid/Ask volume plotted against price levels. | Plotly (Area Chart) |
-| **Order Book** | A custom HTML-table-rendered display of the top 8 levels with a central "Spread Row". | Markdown/HTML |
-| **Spread History** | Time-series line chart tracking the liquidity gap over the session. | Plotly (Scatter/Line) |
+### Step 1: Real-Time Market Health
+The top row of the dashboard displays the **Pulse of the Market**:
+* **Best Bid/Ask:** The current highest buy and lowest sell prices available on the exchange.
+* **Spread (%):** A critical health metric. A widening spread indicates a volatile or illiquid market where trading becomes expensive.
+
+### Step 2: Running an Execution Simulation
+The **Execution Simulation** panel on the left allows you to act as an Ops Manager or Institutional Trader:
+1.  **Select Side:** Choose **Buy** or **Sell**.
+2.  **Trade Amount:** Input your target volume in IDR (e.g., 500,000,000).
+3.  **Analyze Impact:** The dashboard instantly calculates the **Execution VWAP** and **Est. Slippage**. 
+    * *Operational Tip:* If slippage exceeds 0.2%, an Ops Manager might choose to split the order into smaller "slices" or wait for a period of higher liquidity.
+
+### Step 3: Reading the Depth Chart
+The **Market Depth Chart** (Green and Red areas) visualizes the future of price movement:
+* **The Green Area (Bids):** Represents the "Floor." A steep green mountain indicates strong buy support; the price is unlikely to drop quickly.
+* **The Red Area (Asks):** Represents the "Ceiling." A tall red mountain indicates heavy selling pressure.
+* **The Mid-Point:** The narrow gap between these areas is where the spread exists.
+
+### Step 4: Tracking Trends
+The **Price History** and **Spread History** charts help identify correlation. For example, if the spread widens during a price drop, it indicates that liquidity is being pulled from the book, signaling a "Flash Crash" risk.
 
 ---
 
-## Setup and Development
+## 4. Technical Specifications & Architecture
 
-### Prerequisites
-* Python 3.9+
-* Streamlit 1.37+ (for Fragment support)
-* CCXT
-* Plotly
-* Pandas
+### Data Sourcing
+* **Engine:** Powered by the **CCXT** library for robust API communication with Indodax/Tokocrypto.
+* **Update Frequency:** The dashboard utilizes a **1Hz (1 second)** refresh rate to ensure order book data reflects the current market heartbeat.
 
-### Installation
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/handiko/USDT-IDR-Monitoring-Dashboard.git
-    cd USDT-IDR-Monitoring-Dashboard
-    ```
-2.  **Install dependencies**:
-    ```bash
-    pip install streamlit ccxt pandas plotly
-    ```
-3.  **Launch the terminal**:
-    ```bash
-    streamlit run python/app.py
-    ```
+### Mathematical Logic: Slippage Calculation
+The dashboard iterates through the Limit Order Book (LOB) to find the true execution price based on volume:
 
-## Disclaimer
-This terminal is a monitoring and simulation tool. The slippage calculated is a theoretical "best-case" scenario and does not account for exchange fees, network latency, or "phantom" liquidity often found in high-frequency trading environments.
+$$VWAP = \frac{\sum (Price_{level} \times Quantity_{filled})}{\text{Total Quantity}}$$
+
+$$Slippage \% = \left| \frac{VWAP - BestPrice}{BestPrice} \right| \times 100$$
+
+### Technical Stack
+* **Python 3.10+**
+* **Streamlit:** For high-performance, real-time UI/UX.
+* **Plotly:** For interactive, financial-grade charting.
+* **Pandas:** For real-time data frame manipulation and cumulative liquidity calculations.
+
+---
+
+## 5. How to Run Locally
+1. Clone the repository: `git clone https://github.com/handiko/USDT-IDR-Monitoring-Dashboard`
+2. Install dependencies: `pip install streamlit ccxt plotly pandas`
+3. Launch the application: `streamlit run app.py`
