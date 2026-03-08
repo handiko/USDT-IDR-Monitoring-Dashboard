@@ -2,6 +2,8 @@
 
 A high-fidelity monitoring terminal for the **USDT/IDR** pair, built for liquidity analysis and execution simulation across Indonesian exchanges. This project focuses on minimizing latency and maximizing the visibility of order book depth through a "Terminal-as-a-Service" UI.
 
+![](./screen.png)
+
 ---
 
 ## Architectural Overview
