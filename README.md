@@ -70,8 +70,8 @@ The interface is transformed via **Global CSS Injection** to mimic a professiona
 ### Installation
 1.  **Clone the repository**:
     ```bash
-    git clone [https://github.com/your-username/ajaib-ops-terminal.git](https://github.com/your-username/ajaib-ops-terminal.git)
-    cd ajaib-ops-terminal
+    git clone [https://github.com/handiko/USDT-IDR-Monitoring-Dashboard.git](https://github.com/handiko/USDT-IDR-Monitoring-Dashboard.git)
+    cd USDT-IDR-Monitoring-Dashboard
     ```
 2.  **Install dependencies**:
     ```bash
