@@ -79,7 +79,7 @@ The interface is transformed via **Global CSS Injection** to mimic a professiona
     ```
 3.  **Launch the terminal**:
     ```bash
-    streamlit run app_dashboard.py
+    streamlit run python/app.py
     ```
 
 ## Disclaimer
