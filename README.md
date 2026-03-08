@@ -1,7 +1,5 @@
 # 📘 USDT-IDR Market Monitor: A Demo
 
-![](./screen.png)
-
 ## 1. Context & Business Case
 ### Background: The Liquidity Challenge
 In the Indonesian crypto ecosystem, the **USDT/IDR** pair serves as the foundational gateway for digital asset trading. For a Business Operations team, the "ticker price" is often a surface-level metric. The real operational challenge lies in **Liquidity Depth**. 
@@ -14,6 +12,10 @@ Imagine a scenario where a Business Operations Associate must execute a **100,00
 * **The Problem:** There isn't enough immediate demand at 16,971 to fill the entire 100M IDR order.
 * **The Reality:** To complete the sale, the order "walks" down the order book, filling at progressively lower prices.
 * **The Goal:** This dashboard was built to predict this exact cost *before* the trade is executed, allowing for smarter, data-driven execution strategies.
+
+<p align="center">
+  <img src="screen.png" alt="screen" width="900"/>
+</p>
 
 ---
 
