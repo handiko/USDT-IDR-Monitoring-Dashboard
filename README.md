@@ -93,4 +93,4 @@ $$Slippage \% = \left| \frac{VWAP - BestPrice}{BestPrice} \right| \times 100$$
 ## 5. How to Run Locally
 1. Clone the repository: `git clone https://github.com/handiko/USDT-IDR-Monitoring-Dashboard`
 2. Install dependencies: `pip install streamlit ccxt plotly pandas`
-3. Launch the application: `streamlit run app.py`
+3. From the python folder, launch the application: `streamlit run app.py`
