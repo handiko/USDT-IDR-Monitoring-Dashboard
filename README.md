@@ -94,3 +94,7 @@ $$Slippage \% = \left| \frac{VWAP - BestPrice}{BestPrice} \right| \times 100$$
 1. Clone the repository: `git clone https://github.com/handiko/USDT-IDR-Monitoring-Dashboard`
 2. Install dependencies: `pip install streamlit ccxt plotly pandas`
 3. From the python folder, launch the application: `streamlit run app.py`
+
+---
+
+Back to [Algo Page](https://handiko.github.io/algo/)
